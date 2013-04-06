@@ -33,17 +33,35 @@ renderer.render(scene, camera);
 /* ******************************
  * Event Handlers
  * ******************************/
+var tempDown = 0;
+tempDown.x = 0;
+tempDown.y = 0;
+var called = false;
+function onDown(e){
+	tempDown = 1;
+	tempDown.x = e.clientX;
+	tempDown.y = e.clientY;
+}
+function onUp(e){
+	tempDown = 0;
+	tempDown.x = null;
+	tempDown.y = null;
+}
 function mouseMove(e){
-	//cube.position.x = (e.clientX / document.innerWidth);
-	alert ((e.clientX / window.innerWidth) *2 -1);
-	alert (cube.position.x);
+	if (tempDown && !called){
+		called = true;
+	}
+	else if (!tempDown && called){
+		called = false;
+	}
 }
 function mouseClick(e){
 	cube.position.x = (e.clientX / window.innerWidth) * 2 - 1;
 	cube.position.y = -(e.clientY / window.innerHeight) * 2 + 1;
 }
-//document.addEventListener("mousemove",mouseMove, false);
-document.addEventListener("click",mouseClick, false);
+document.addEventListener("mousemove",mouseMove, false);
+document.addEventListener("mousedown",onDown, false);
+document.addEventListener("mouseup",onUp, false);
 /* ******************************
  * Render function 
  * *****************************/
